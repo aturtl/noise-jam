@@ -27,5 +27,3 @@ func _physics_process(delta):
 	
 	torus.position *= rot
 	torus.rotation *= rot
-	
-	print(v)

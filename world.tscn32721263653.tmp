@@ -1,11 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://cxrvy73smkv3v"]
+[gd_scene load_steps=10 format=3 uid="uid://cxrvy73smkv3v"]
 
 [ext_resource type="Script" uid="uid://lq4oqqtavrxk" path="res://Player.gd" id="1_f3sb7"]
 [ext_resource type="Script" uid="uid://dr1h5vc5gxq3a" path="res://WatchPlayer.gd" id="1_fj7yv"]
 [ext_resource type="Script" uid="uid://c1ndawyirmaft" path="res://matrixRotationTest.gd" id="3_tlwt5"]
 [ext_resource type="Script" uid="uid://bmsngfwt4k7s4" path="res://basis_test.gd" id="4_aqk2v"]
 [ext_resource type="Shader" uid="uid://ba54ntt5qmq6q" path="res://glitch.gdshader" id="5_036b0"]
-[ext_resource type="Script" uid="uid://coud7ueloi872" path="res://yelling.gd" id="6_dwbse"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dwbse"]
 render_priority = 12
@@ -21,8 +20,6 @@ size = Vector2(2, 2)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_fj7yv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tlwt5"]
-
-[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_dwbse"]
 
 [node name="World" type="Node3D"]
 
@@ -81,68 +78,9 @@ script = ExtResource("3_tlwt5")
 transform = Transform3D(1, 0, 0, 0, 0.00935477, 0.999956, 0, -0.999956, 0.00935477, 0.000370264, 1.1555, 4.24684)
 
 [node name="BasisTest" type="CSGBox3D" parent="."]
-transform = Transform3D(0.989305, 0.998735, 1.01183, -0.105688, 0.987502, 0.116921, 0.10629, -0.105688, 0.988702, 0.164602, 1.55464, 1.98917)
+transform = Transform3D(0.867036, 0.915215, 1.1877, -0.375159, 0.760778, 0.529596, 0.411657, -0.375159, 0.830538, 0.164602, 1.55464, 1.98917)
 script = ExtResource("4_aqk2v")
 t = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.92, 2.615, 5.055)
-t2 = Basis(0.989305, 0.998735, 1.01183, -0.105688, 0.987502, 0.116921, 0.10629, -0.105688, 0.988702)
+t2 = Basis(0.867036, 0.915215, 1.1877, -0.375159, 0.760778, 0.529596, 0.411657, -0.375159, 0.830538)
 add_factor = 0.01
 d1 = Basis(1, 1, 1, 0, 1, 0, 0, 0, 1)
-
-[node name="MicInput" type="Node3D" parent="." node_paths=PackedStringArray("volume_text", "record_button")]
-script = ExtResource("6_dwbse")
-volume_text = NodePath("../GUI/Volume")
-record_button = NodePath("../GUI/Record")
-
-[node name="Input" type="AudioStreamPlayer" parent="MicInput"]
-stream = SubResource("AudioStreamMicrophone_dwbse")
-autoplay = true
-bus = &"Record"
-
-[node name="Output" type="AudioStreamPlayer" parent="MicInput"]
-
-[node name="GUI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 1152.0
-offset_bottom = 648.0
-
-[node name="Record" type="Button" parent="GUI"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -56.0
-offset_top = -58.0
-offset_right = 56.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "record"
-
-[node name="Play" type="Button" parent="GUI"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = 74.0
-offset_top = -59.0
-offset_right = 186.0
-offset_bottom = -9.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "play"
-
-[node name="Volume" type="RichTextLabel" parent="GUI"]
-layout_mode = 0
-offset_left = 373.0
-offset_top = 594.0
-offset_right = 489.0
-offset_bottom = 634.0
-text = "volume"
-
-[connection signal="pressed" from="GUI/Record" to="MicInput" method="_on_record_pressed"]
-[connection signal="pressed" from="GUI/Play" to="MicInput" method="_on_play_pressed"]

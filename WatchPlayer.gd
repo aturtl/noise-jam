@@ -9,7 +9,7 @@ func _ready():
 	new_pos = body.position + -5*-body.transform.basis.z
 
 func _physics_process(delta):
-	camera.look_at(body.position)
+	camera.look_at(body.position, Vector3(0,.5,0))
 	
 	var dir:Vector3 = camera.position.direction_to(body.position)
 	
@@ -22,6 +22,9 @@ func _physics_process(delta):
 	elif camera.position.lerp(new_pos,.7).distance_to(body.position) < 2:
 		new_pos -= dir*.1
 	
+	if new_pos.distance_to(body.position) < 1:
+		new_pos = -body.position.direction_to(new_pos)
+	
 	new_pos.y = body.position.y + .5
 	
-	camera.position = camera.position.lerp(new_pos, .02)
+	camera.position = camera.position.lerp(new_pos, .1)
