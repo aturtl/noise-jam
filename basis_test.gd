@@ -17,6 +17,10 @@ extends CSGBox3D
 @export var disable_add: bool
 @export var add_factor: float = 0
 
+@export var d1:Basis = Basis.IDENTITY
+@export var d2:Basis = Basis.IDENTITY
+@export var d3:Basis = Basis.IDENTITY
+
 var add:float = 0
 
 func _physics_process(delta):
@@ -45,6 +49,10 @@ func _physics_process(delta):
 	if disable_y_change: ry = Basis()
 	if disable_z_change: rz = Basis()
 	
-	t2 = Basis(Vector3(2,1,0),Vector3(0,.5,1),Vector3(0,0,1))*rx*ry*rz*t.basis
+	#var d1 = Basis(Vector3(2,1,0),Vector3(0,.5,1),Vector3(0,0,1)).orthonormalized()
+	#var d2 = Basis(Vector3(1,2,0),Vector3(1,1,1),Vector3(1,0,1)).orthonormalized()
+	#var d3 = Basis(Vector3(1,1,0),Vector3(0,1,0),Vector3(0,0,1)).orthonormalized()
+	
+	t2 = d1*d2*d3*rx*ry*rz*t.basis
 	
 	transform.basis = t2

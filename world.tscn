@@ -1,9 +1,21 @@
-[gd_scene load_steps=7 format=3 uid="uid://cxrvy73smkv3v"]
+[gd_scene load_steps=10 format=3 uid="uid://cxrvy73smkv3v"]
 
 [ext_resource type="Script" uid="uid://lq4oqqtavrxk" path="res://Player.gd" id="1_f3sb7"]
 [ext_resource type="Script" uid="uid://dr1h5vc5gxq3a" path="res://WatchPlayer.gd" id="1_fj7yv"]
 [ext_resource type="Script" uid="uid://c1ndawyirmaft" path="res://matrixRotationTest.gd" id="3_tlwt5"]
 [ext_resource type="Script" uid="uid://bmsngfwt4k7s4" path="res://basis_test.gd" id="4_aqk2v"]
+[ext_resource type="Shader" uid="uid://ba54ntt5qmq6q" path="res://glitch.gdshader" id="5_036b0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dwbse"]
+render_priority = 12
+shader = ExtResource("5_036b0")
+shader_parameter/pixel_size = 6.0
+shader_parameter/offset = 0.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_pkg7o"]
+material = SubResource("ShaderMaterial_dwbse")
+flip_faces = true
+size = Vector2(2, 2)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_fj7yv"]
 
@@ -34,11 +46,19 @@ size = Vector3(5, 2, 1)
 
 [node name="PlayerCamera" type="Camera3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.46741, 0)
+current = true
 
 [node name="WatchPlayer" type="Node" parent="Player/PlayerCamera" node_paths=PackedStringArray("body", "camera")]
 script = ExtResource("1_fj7yv")
 body = NodePath("../../PlayerBody")
 camera = NodePath("..")
+
+[node name="Pixellate" type="MeshInstance3D" parent="Player/PlayerCamera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.46741, 0)
+cast_shadow = 0
+extra_cull_margin = 10195.7
+mesh = SubResource("QuadMesh_pkg7o")
+skeleton = NodePath("../../..")
 
 [node name="PlayerBody" type="CharacterBody3D" parent="Player" node_paths=PackedStringArray("camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -46,6 +66,7 @@ script = ExtResource("1_f3sb7")
 camera = NodePath("../PlayerCamera")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player/PlayerBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.02005)
 mesh = SubResource("CapsuleMesh_fj7yv")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player/PlayerBody"]
@@ -58,11 +79,9 @@ script = ExtResource("3_tlwt5")
 transform = Transform3D(1, 0, 0, 0, 0.00935477, 0.999956, 0, -0.999956, 0.00935477, 0.000370264, 1.1555, 4.24684)
 
 [node name="BasisTest" type="CSGBox3D" parent="."]
-transform = Transform3D(1.00602, 1.72834, 0.0276453, 0.071292, 1.11504, 0.0399859, -0.825149, 0.463486, 1.05086, 0, 1.76179, 1.39537)
+transform = Transform3D(0.821555, -0.702834, 1.35317, -0.198848, -0.897539, 0.393553, 0.979162, -0.198848, 0.0412414, 0.164602, 1.55464, 1.98917)
 script = ExtResource("4_aqk2v")
 t = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.92, 2.615, 5.055)
-rot_x = 1.005
-t2 = Basis(1.00602, 1.72834, 0.0276453, 0.071292, 1.11504, 0.0399859, -0.825149, 0.463486, 1.05086)
+t2 = Basis(0.821555, -0.702834, 1.35317, -0.198848, -0.897539, 0.393553, 0.979162, -0.198848, 0.0412414)
 add_factor = 0.01
-
-[node name="Camera3D" type="Camera3D" parent="BasisTest"]
+d1 = Basis(1, 1, 1, 0, 1, 0, 0, 0, 1)
