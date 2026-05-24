@@ -14,12 +14,12 @@ void fragment() {
 	// Called for every pixel the material is visible on.
 	vec2 texel_size = vec2(textureSize(screen_texture, 0));
 	vec2 pixel_count = texel_size / pixel_size;
-	
+
 	vec2 pixel_uv = floor(SCREEN_UV * pixel_count) /  pixel_count;
-	float color_r = texture(screen_texture, pixel_uv + vec2(offset, 0)).r;
+	float color_r = texture(screen_texture, pixel_uv).r;
 	float color_g = texture(screen_texture, (pixel_uv - offset)).g;
 	float color_b = texture(screen_texture, (pixel_uv + offset)).b;
-	
+
 	ALBEDO = vec3(color_r,color_g,color_b);
 }
 

@@ -1,9 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://cxrvy73smkv3v"]
+[gd_scene load_steps=18 format=3 uid="uid://cxrvy73smkv3v"]
 
 [ext_resource type="Script" uid="uid://lq4oqqtavrxk" path="res://Player.gd" id="1_f3sb7"]
 [ext_resource type="Script" uid="uid://dr1h5vc5gxq3a" path="res://WatchPlayer.gd" id="1_fj7yv"]
+[ext_resource type="Shader" uid="uid://dl3aes71e0yac" path="res://analog_fail.gdshader" id="3_pkg7o"]
 [ext_resource type="Script" uid="uid://c1ndawyirmaft" path="res://matrixRotationTest.gd" id="3_tlwt5"]
 [ext_resource type="Script" uid="uid://bmsngfwt4k7s4" path="res://basis_test.gd" id="4_aqk2v"]
+[ext_resource type="Shader" uid="uid://bg7rmnjab2pgr" path="res://analog.gdshader" id="4_gbfbk"]
 [ext_resource type="Shader" uid="uid://ba54ntt5qmq6q" path="res://glitch.gdshader" id="5_036b0"]
 [ext_resource type="Script" uid="uid://coud7ueloi872" path="res://yelling.gd" id="6_dwbse"]
 
@@ -18,6 +20,30 @@ material = SubResource("ShaderMaterial_dwbse")
 flip_faces = true
 size = Vector2(2, 2)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pkg7o"]
+render_priority = 0
+shader = ExtResource("3_pkg7o")
+shader_parameter/pixel_size = 4.0
+shader_parameter/noise_amount = 0.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_ioo17"]
+material = SubResource("ShaderMaterial_pkg7o")
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ioo17"]
+render_priority = 0
+shader = ExtResource("4_gbfbk")
+shader_parameter/pixel_size = 2.0
+shader_parameter/vignette_radius = 0.2
+shader_parameter/vignette_smoothness = 0.45
+shader_parameter/noise_intensity = 0.12
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wse8f"]
+material = SubResource("ShaderMaterial_ioo17")
+flip_faces = true
+orientation = 2
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_fj7yv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tlwt5"]
@@ -28,6 +54,7 @@ size = Vector2(2, 2)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+light_specular = 3.818
 shadow_enabled = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
@@ -56,11 +83,26 @@ script = ExtResource("1_fj7yv")
 body = NodePath("../../PlayerBody")
 camera = NodePath("..")
 
-[node name="Pixellate" type="MeshInstance3D" parent="Player/PlayerCamera"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.46741, 0)
+[node name="Pixelate" type="MeshInstance3D" parent="Player/PlayerCamera"]
+visible = false
 cast_shadow = 0
 extra_cull_margin = 10195.7
 mesh = SubResource("QuadMesh_pkg7o")
+skeleton = NodePath("../../..")
+
+[node name="AnalogFail" type="MeshInstance3D" parent="Player/PlayerCamera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0419698, -1.17876, 0.0439689)
+visible = false
+cast_shadow = 0
+extra_cull_margin = 4601.27
+mesh = SubResource("QuadMesh_ioo17")
+skeleton = NodePath("../../..")
+
+[node name="AnalogAttempt2" type="MeshInstance3D" parent="Player/PlayerCamera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.92928, 1.01398, 4.92935)
+cast_shadow = 0
+extra_cull_margin = 4601.27
+mesh = SubResource("PlaneMesh_wse8f")
 skeleton = NodePath("../../..")
 
 [node name="PlayerBody" type="CharacterBody3D" parent="Player" node_paths=PackedStringArray("camera")]
@@ -81,10 +123,10 @@ script = ExtResource("3_tlwt5")
 transform = Transform3D(1, 0, 0, 0, 0.00935477, 0.999956, 0, -0.999956, 0.00935477, 0.000370264, 1.1555, 4.24684)
 
 [node name="BasisTest" type="CSGBox3D" parent="."]
-transform = Transform3D(0.989305, 0.998735, 1.01183, -0.105688, 0.987502, 0.116921, 0.10629, -0.105688, 0.988702, 0.164602, 1.55464, 1.98917)
+transform = Transform3D(0.74306, 1.07155, 1.14001, 0.40522, 0.887151, -0.220816, -0.455071, 0.40522, 0.79291, 0.164602, 1.55464, 1.98917)
 script = ExtResource("4_aqk2v")
 t = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.92, 2.615, 5.055)
-t2 = Basis(0.989305, 0.998735, 1.01183, -0.105688, 0.987502, 0.116921, 0.10629, -0.105688, 0.988702)
+t2 = Basis(0.74306, 1.07155, 1.14001, 0.40522, 0.887151, -0.220816, -0.455071, 0.40522, 0.79291)
 add_factor = 0.01
 d1 = Basis(1, 1, 1, 0, 1, 0, 0, 0, 1)
 
@@ -103,8 +145,8 @@ bus = &"Record"
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="Record" type="Button" parent="GUI"]
 layout_mode = 1
@@ -138,10 +180,10 @@ text = "play"
 
 [node name="Volume" type="RichTextLabel" parent="GUI"]
 layout_mode = 0
-offset_left = 373.0
-offset_top = 594.0
-offset_right = 489.0
-offset_bottom = 634.0
+offset_left = 761.0
+offset_top = 1029.0
+offset_right = 877.0
+offset_bottom = 1069.0
 text = "volume"
 
 [connection signal="pressed" from="GUI/Record" to="MicInput" method="_on_record_pressed"]
