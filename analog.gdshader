@@ -21,7 +21,7 @@ float noise_hash(vec2 uv) {
 float vignette(vec2 uv) {
 	vec2 centered_uv = uv-.5;
 	float mag = sqrt(dot(centered_uv,centered_uv));
-	float vig = 1.0-smoothstep(.2,.65,mag);
+	float vig = 1.0-smoothstep(vignette_radius,vignette_radius + vignette_smoothness,mag);
 	return vig;
 }
 
@@ -34,7 +34,7 @@ void fragment() {
 	
 	vec4 pixel_texture = texture(screen_texture, texel_uv);
 	
-	vec3 noise = vec3(noise_hash(texel_uv*sin(TIME)+4.))*noise_intensity;
+	vec3 noise = vec3(noise_hash(texel_uv*(sin(TIME)+4.)))*noise_intensity;
 	vec3 vignette = vec3(vignette(texel_uv));
 	
 	vec3 applied = (pixel_texture.rgb-noise)*vignette;

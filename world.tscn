@@ -34,10 +34,10 @@ size = Vector2(2, 2)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ioo17"]
 render_priority = 0
 shader = ExtResource("4_gbfbk")
-shader_parameter/pixel_size = 2.0
+shader_parameter/pixel_size = 4.0
 shader_parameter/vignette_radius = 0.2
 shader_parameter/vignette_smoothness = 0.45
-shader_parameter/noise_intensity = 0.12
+shader_parameter/noise_intensity = 0.18
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wse8f"]
 material = SubResource("ShaderMaterial_ioo17")
@@ -123,10 +123,10 @@ script = ExtResource("3_tlwt5")
 transform = Transform3D(1, 0, 0, 0, 0.00935477, 0.999956, 0, -0.999956, 0.00935477, 0.000370264, 1.1555, 4.24684)
 
 [node name="BasisTest" type="CSGBox3D" parent="."]
-transform = Transform3D(0.74306, 1.07155, 1.14001, 0.40522, 0.887151, -0.220816, -0.455071, 0.40522, 0.79291, 0.164602, 1.55464, 1.98917)
+transform = Transform3D(0.645971, 1.10374, 1.16811, 0.446909, 0.869044, -0.212214, -0.525153, 0.446909, 0.724214, 0.164602, 1.55464, 1.98917)
 script = ExtResource("4_aqk2v")
 t = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.92, 2.615, 5.055)
-t2 = Basis(0.74306, 1.07155, 1.14001, 0.40522, 0.887151, -0.220816, -0.455071, 0.40522, 0.79291)
+t2 = Basis(0.645971, 1.10374, 1.16811, 0.446909, 0.869044, -0.212214, -0.525153, 0.446909, 0.724214)
 add_factor = 0.01
 d1 = Basis(1, 1, 1, 0, 1, 0, 0, 0, 1)
 
