@@ -1,6 +1,6 @@
 # Massive thanks to The Shaggy Dev for the mic tutorial video https://www.youtube.com/watch?v=gS3IuLqmgx4wd
 
-extends Node3D
+extends Node
 
 @export var volume_text: RichTextLabel
 @export var record_button: Button

@@ -13,15 +13,18 @@ config_version=5
 config/name="noise jam"
 run/main_scene="uid://cxrvy73smkv3v"
 config/features=PackedStringArray("4.4", "Forward Plus")
+run/max_fps=60
 config/icon="res://icon.svg"
 
 [audio]
 
+buses/default_bus_layout="res://player/mic/audio_layout.tres"
 driver/enable_input=true
 
 [autoload]
 
-Physics="*res://globals/physics.gd"
+PhysicsState="*res://globals/physics_state.gd"
+PlayerState="*res://globals/player_state.gd"
 
 [display]
 

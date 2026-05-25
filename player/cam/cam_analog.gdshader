@@ -25,6 +25,21 @@ float vignette(vec2 uv) {
 	return vig;
 }
 
+vec2 rotate_uv(vec2 uv, float t)
+{	
+	uv -= .5;
+	
+	mat2 rot_mat = mat2(
+		vec2(cos(t),-sin(t)),
+		vec2(sin(t),cos(t))
+	);
+	
+	uv = rot_mat*uv;
+	
+	uv += .5;
+	return uv;
+}
+
 void fragment() {
 	// Called for every pixel the material is visible on.
 	vec2 texture_size = VIEWPORT_SIZE;
@@ -32,7 +47,17 @@ void fragment() {
 	
 	vec2 texel_uv = (ceil(SCREEN_UV*pixel_count))/(pixel_count+1.0);
 	
+	//texel_uv = rotate_uv(texel_uv,cos(TIME)*PI/128.0);
+	
 	vec4 pixel_texture = texture(screen_texture, texel_uv);
+	
+	// Excluded for clarity. Might add back later as a parameter to be controlled.
+	//vec2 chrom_direction = vec2(cos(TIME*12.0)-sin(TIME*12.0),sin(TIME*12.0)+cos(TIME*12.0))*12.0;
+	//	
+	//vec4 pixel_texture_l = texture(screen_texture, texel_uv - chrom_direction);
+	//vec4 pixel_texture_r = texture(screen_texture, texel_uv + chrom_direction);
+	//
+	//vec3 chromatic_abberation = vec3(pixel_texture_l.r,pixel_texture.g,pixel_texture_r.b);
 	
 	vec3 noise = vec3(noise_hash(texel_uv*(sin(TIME)+4.)))*noise_intensity;
 	vec3 vignette = vec3(vignette(texel_uv));

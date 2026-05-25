@@ -1,0 +1,162 @@
+[gd_scene load_steps=13 format=3 uid="uid://cxrvy73smkv3v"]
+
+[ext_resource type="Script" uid="uid://lq4oqqtavrxk" path="res://player/player.gd" id="1_i7141"]
+[ext_resource type="Script" uid="uid://se7pvgomsiht" path="res://player/cam/cam_watch.gd" id="2_4mrxx"]
+[ext_resource type="Script" uid="uid://c4alngmbt2vna" path="res://player/cam/cam_shake.gd" id="3_7r4gi"]
+[ext_resource type="Shader" uid="uid://bg7rmnjab2pgr" path="res://player/cam/cam_analog.gdshader" id="4_w7kh3"]
+[ext_resource type="Script" uid="uid://c1ndawyirmaft" path="res://temp/torus_rotation_basis_test.gd" id="5_e3hyu"]
+[ext_resource type="Script" uid="uid://bmsngfwt4k7s4" path="res://temp/cube_basis_test.gd" id="6_q5onr"]
+[ext_resource type="Script" uid="uid://coud7ueloi872" path="res://player/mic/microphone.gd" id="7_jhx03"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_fj7yv"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tlwt5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ioo17"]
+render_priority = 0
+shader = ExtResource("4_w7kh3")
+shader_parameter/pixel_size = 2.0
+shader_parameter/vignette_radius = 0.2
+shader_parameter/vignette_smoothness = 0.45
+shader_parameter/noise_intensity = 0.15
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wse8f"]
+material = SubResource("ShaderMaterial_ioo17")
+flip_faces = true
+orientation = 2
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_dwbse"]
+
+[node name="World" type="Node3D"]
+
+[node name="Map" type="Node3D" parent="."]
+
+[node name="Floor" type="CSGBox3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(17, 1, 17)
+
+[node name="Wall" type="CSGBox3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -8)
+use_collision = true
+size = Vector3(5, 2, 1)
+
+[node name="Wall2" type="CSGBox3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 8)
+use_collision = true
+size = Vector3(5, 2, 1)
+
+[node name="Player" type="Node3D" parent="."]
+
+[node name="PlayerBody" type="CharacterBody3D" parent="Player" node_paths=PackedStringArray("direction_node")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_i7141")
+direction_node = NodePath("../CameraWatch/CameraShake")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/PlayerBody"]
+mesh = SubResource("CapsuleMesh_fj7yv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/PlayerBody"]
+shape = SubResource("CapsuleShape3D_tlwt5")
+
+[node name="CameraWatch" type="Node3D" parent="Player" node_paths=PackedStringArray("body", "watch_node")]
+script = ExtResource("2_4mrxx")
+body = NodePath("../PlayerBody")
+watch_node = NodePath("CameraShake")
+
+[node name="CameraShake" type="Node3D" parent="Player/CameraWatch" node_paths=PackedStringArray("shake_node")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.46741, 0)
+script = ExtResource("3_7r4gi")
+shake_node = NodePath("PlayerCamera")
+
+[node name="PlayerCamera" type="Camera3D" parent="Player/CameraWatch/CameraShake"]
+current = true
+
+[node name="AnalogEffectsShader" type="MeshInstance3D" parent="Player/CameraWatch/CameraShake/PlayerCamera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.92928, 1.01398, 4.92935)
+cast_shadow = 0
+extra_cull_margin = 4601.27
+mesh = SubResource("PlaneMesh_wse8f")
+skeleton = NodePath("../../../../..")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+light_specular = 3.818
+shadow_enabled = true
+
+[node name="Objects" type="Node3D" parent="."]
+script = ExtResource("5_e3hyu")
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 0.00935477, 0.999956, 0, -0.999956, 0.00935477, 0.000370264, 1.1555, 4.24684)
+
+[node name="BasisTest" type="CSGBox3D" parent="Objects"]
+transform = Transform3D(0.0688718, 0.497596, 0.86467, -0.253236, -0.82962, 0.497596, 0.96495, -0.253236, 0.0688718, 0.164602, 1.55464, 1.98917)
+script = ExtResource("6_q5onr")
+t = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.92, 2.615, 5.055)
+t2 = Basis(0.0688718, 0.497596, 0.86467, -0.253236, -0.82962, 0.497596, 0.96495, -0.253236, 0.0688718)
+add_factor = 0.01
+
+[node name="Microphone" type="Node" parent="." node_paths=PackedStringArray("volume_text", "record_button")]
+script = ExtResource("7_jhx03")
+volume_text = NodePath("../GUI/AudioInterface/Volume")
+record_button = NodePath("../GUI/AudioInterface/Record")
+
+[node name="Input" type="AudioStreamPlayer" parent="Microphone"]
+stream = SubResource("AudioStreamMicrophone_dwbse")
+autoplay = true
+bus = &"Record"
+
+[node name="Output" type="AudioStreamPlayer" parent="Microphone"]
+
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="AudioInterface" type="Control" parent="GUI"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Record" type="Button" parent="GUI/AudioInterface"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 884.0
+offset_top = 982.0
+offset_right = 996.0
+offset_bottom = 1032.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "record"
+
+[node name="Play" type="Button" parent="GUI/AudioInterface"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 1014.0
+offset_top = 981.0
+offset_right = 1126.0
+offset_bottom = 1031.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "play"
+
+[node name="Volume" type="RichTextLabel" parent="GUI/AudioInterface"]
+layout_mode = 0
+offset_left = 761.0
+offset_top = 1029.0
+offset_right = 877.0
+offset_bottom = 1069.0
+text = "volume"
+
+[connection signal="pressed" from="GUI/AudioInterface/Record" to="Microphone" method="_on_record_pressed"]
+[connection signal="pressed" from="GUI/AudioInterface/Play" to="Microphone" method="_on_play_pressed"]

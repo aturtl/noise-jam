@@ -1,4 +1,4 @@
-extends Node2D
+extends Node3D
 
 var v:Vector3 = Vector3(1,0,0)
 
@@ -12,8 +12,6 @@ func _physics_process(delta):
 		Vector3(),
 		Vector3()
 	)
-	
-	
 	
 	var angle: float = .5
 	
